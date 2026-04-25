@@ -1,0 +1,36 @@
+
+/* layout.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.layout-wrapper {
+    display: flex; /* Aligne sidebar et contenu horizontalement */
+    min-height: 100vh;
+}
+
+.sidebar-container {
+    width: 300px; /* Largeur du menu bordeaux */
+    min-width: 300px;
+    background-color: #581428;
+    color: white;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.main-content {
+    flex: 1; /* Prend tout l'espace restant à droite */
+    padding: 30px;
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+/* Grille interne du profil */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr; /* 3 colonnes selon votre design */
+    gap: 20px;
+}

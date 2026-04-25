@@ -1,0 +1,122 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Lexend", sans-serif;
+    background: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2940&auto=format&fit=crop') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes dropUp {
+    0% {
+        opacity: 0;
+        transform: translate(0%, 4%);
+    }
+    60% {
+        opacity: 1;
+        transform: translate(0%, -2%);
+    }
+    100% {
+        transform: translate(0%, 0%);
+    }
+}
+
+/* Conteneur principal (La carte blanche) */
+.login-card {
+    background: rgba(255, 255, 255, 0.7); 
+    backdrop-filter: blur(5px);
+    padding: 40px;
+    border: #fff solid 2px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+    margin: 20px;
+    animation: dropUp 700ms ease-out both;
+}
+
+h1 {
+    color: #5a0b2e;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px 20px;
+    border: 1px solid #5D0632;
+    border-radius: 50px;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    transition: border-color 0.1s;
+}
+
+input:focus {
+    border: 1px solid #fff;
+    outline: #EFE6E3 solid 3px;
+}
+
+.forgot-pass {
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    color: #5a0b2e;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.btn-submit {
+    background-color: #581428;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: 0.1s;
+}
+
+.btn-submit:hover {
+    background-color: #7a1b40;
+}
+
+/* Footer Inscription */
+.register-link {
+    font-size: 12px;
+    color: #5a0b2e;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+/* Message PHP */
+.message {
+    margin-bottom: 15px;
+    color: red;
+    font-size: 14px;
+}

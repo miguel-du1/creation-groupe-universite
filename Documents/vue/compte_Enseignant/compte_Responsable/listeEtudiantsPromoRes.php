@@ -1,0 +1,361 @@
+<?php
+if (!isset($_SESSION['user_id']) || $_SESSION['user_id'] === null) {
+    header('Location: index.php?page=login');
+    exit();
+}
+
+// Verifier le role du compte
+$rolesAutorises = ['Admin', 'Responsable'];
+if (!in_array($_SESSION['role_compte'] ?? '', $rolesAutorises, true)) {
+    http_response_code(403);
+    echo "Accès interdit pour votre compte";
+    exit();
+}
+
+require_once 'modele/promotion.php';
+$liste_etudiants_promotion = isset($_GET['promo']) ? Promotion::getListeEtudiantsParPromo($_GET['promo']) : array() ;
+
+$liste_promotion = Promotion::getAllPromotion();
+?>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="icon" type="image/png" href="assets/iconPS.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <title>Promotions</title>
+</head>
+<style>
+    .main_content_panel {
+        position: relative;
+        flex: 1;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 50px
+    }
+
+    .nav_panel_promo_page {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 50px;
+        position: relative;
+        width: 100%;
+
+        h1 {
+            color: #5D0632;
+            font-weight: 600;
+        }
+
+        .form_chercher_promo {
+            margin-left: 20px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+
+            select {
+                background-color: #5D0632;
+                padding: 5px 20px;
+                color: #fff;
+                height: 40px;
+                border-radius: 100px;
+                font-weight: bold;
+                font-size: 16px;
+                text-align: center;
+            }
+        }
+    }
+
+    .table_content_promotion {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        height: 100%;
+        max-height: 80vh;
+
+        img {
+            width: 100%;
+            transform: scale(0.3);
+        }
+
+        .liste_etudiants_par_groupe {
+            height: 100%;
+            outline: #5D0632 solid 2px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 20px;
+            flex: 1;
+            overflow: scroll;
+            
+            table {
+                font-size: 0.9rem;
+                width: 100%;
+                outline: #5D0632 solid 1px;
+
+                thead > tr > th {
+                    background-color: rgba(93, 6, 50, 0.1);
+                    color: #5D0632;
+                    font-weight: 400;
+                    outline: #5D0632 solid 1px;
+                    padding: 5px;
+                }
+
+                th, td {
+                    outline: #5D0632 solid 1px;
+                    padding: 8px 10px;
+                    text-align: center;
+
+                    button {
+                        width: 100%;
+                        height: 100%;
+                        background: #5D0632;
+                        border: 1px solid #5D0632;
+                        border-radius: 6px;
+                        box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+                        box-sizing: border-box;
+                        color: #FFFFFF;
+                        cursor: pointer;
+                        display: inline-block;
+                        line-height: 16px;
+                        font-size: 16px;
+                        font-weight: 400;
+                        min-height: 40px;
+                        outline: 0;
+                        padding: 12px 14px;
+                        text-align: center;
+                        text-rendering: geometricprecision;
+                        text-transform: none;
+                        user-select: none;
+                        -webkit-user-select: none;
+                        touch-action: manipulation;
+                        vertical-align: middle;
+                    }
+
+                    button:hover,
+                    button:active {
+                        background-color: initial;
+                        background-position: 0 0;
+                        color: #5D0632;
+                    }
+
+                    button:active {
+                        opacity: .5;
+                    }
+                }
+
+                tbody > tr:nth-of-type(even) {
+                    background-color: #f5f5f5;
+                }
+            }
+        }
+    }
+
+    /* BUTTON AJOUTER */
+    .form_add_etudiant {
+        position: relative;
+        right: 0;
+        flex: 1;
+        margin-left: 150px;
+    }
+    .noselect {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translate(0%, -50%);
+        width: 400px;
+        height: 40px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        background: #00a600;
+        border: none;
+        border-radius: 100px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
+        background: #00a600;
+        z-index: 5;
+    }
+
+    .noselect,
+    .noselect span {
+        transition: 200ms;
+    }
+
+    .noselect .text {
+        transform: translateX(35px);
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .noselect .icon {
+        position: absolute;
+        right: 0;
+        border-left: 2px solid #007300;
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .noselect svg {
+        width: 15px;
+        fill: #eee;
+    }
+
+    .noselect:hover {
+        background: #00a600;
+    }
+
+    .noselect:active {
+        background: #00cc00;
+    }
+
+    .noselect:hover .text {
+        color: transparent;
+    }
+
+    .noselect:hover .icon {
+        width: 100%;
+        border-left: none;
+        transform: translateX(0);
+    }
+
+    .noselect:focus {
+        outline: none;
+    }
+
+    .noselect:active .icon svg {
+        transform: scale(0.8);
+    }
+
+    .buttonSpan {
+        color: white;
+        margin: 150px;
+        font-size: 25px;
+
+        i {
+            display: flex;
+        }
+    }
+</style>
+<body>
+    <div class="main_layout_panel">
+        <?php 
+            require_once("controleur/c_sidebar.php");
+        ?>
+        <div class="main_content_panel">
+            <div class="nav_panel_promo_page">
+                <h1>Liste des étudiants de la promotion</h1>
+                <form class="form_chercher_promo" action="index.php" methode="GET">
+                    <input type="hidden" name="page" value="promotionRes">
+                    <select name="promo" onchange="this.form.submit()">
+                        <option value="" disabled selected>Sélectionnez une promotion</option>
+                        <?php   
+                            $idPromoChoisi = isset($_GET['promo']) ? $_GET['promo'] : 0;
+                            foreach ($liste_promotion as $promotion) {
+                                $annee = $promotion->get("anneePromotion");
+                                $idPromo = $promotion->get("idPromotion");
+                                if ($idPromoChoisi == $idPromo) {
+                                    echo "<option value=\"$idPromo\" selected>$annee</option>";
+                                } else {
+                                    echo "<option value=\"$idPromo\">$annee</option>";
+                                }
+                            }
+                        ?>
+                    </select>
+                </form>
+                <form class="form_add_etudiant" action="index.php">
+                    <input type="hidden" name="page" value="ajouterEtuRes">
+                    <button type="submit" class="noselect">
+                        <span class="text">Ajouter un étudiant à la promotion</span>
+                        <span class="icon">
+                        <svg
+                            viewBox="0 0 24 24"
+                            height="24"
+                            width="24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        ></svg><span class="buttonSpan"><i class="fi fi-br-plus-small"></i></span></span>
+                    </button>
+                </form>
+            </div>
+            <div class="table_content_promotion">
+                <?php if (isset($_GET['promo'])): ?>
+                    <div class="liste_etudiants_par_groupe">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">N°</th>
+                                    <th scope="col">ID étudiant</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Prénom</th>
+                                    <th scope="col">Genre</th>
+                                    <th scope="col">Courriel universitaire</th>
+                                    <th scope="col">Type de bac</th>
+                                    <th scope="col">Statut Academique</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php 
+                                    $compteE = 1;
+                                    foreach ($liste_etudiants_promotion as $etudiant) {
+                                        $idE = $etudiant->get("idEtudiant");
+                                        $nom = $etudiant->get("nomPersonne");
+                                        $prenom = $etudiant->get("prenomPersonne");
+                                        $sexe = $etudiant->get("sexePersonne");
+                                        $email = $etudiant->get("emailPersonne");
+                                        $typeBac = $etudiant->get("typeBac");
+                                        $statut = $etudiant->get("statutAcademique");
+    
+                                        echo "<tr>";
+                                        echo "<th scope=\"row\">$compteE</th>";
+                                        echo "<td>$idE</td>";
+                                        echo "<td>$nom</td>";
+                                        echo "<td>$prenom</td>";
+                                        echo "<td>$sexe</td>";
+                                        echo "<td>$email</td>";
+                                        echo "<td>$typeBac</td>";
+                                        echo "<td>$statut</td>";
+                                        echo "<td>";
+                                        echo "<form action=\"index.php\">";
+                                        echo "<input type=\"hidden\" name=\"page\" value=\"profilEtuRes\">";
+                                        echo "<input type=\"hidden\" name=\"promo\" value=\"{$_GET['promo']}\">";
+                                        echo "<input type=\"hidden\" name=\"etudiant\" value=\"$idE\">";
+                                        echo "<input type=\"hidden\" name=\"edit\" value=\"false\">";
+                                        echo "<button class=\"groupe_a_choisir\" type=\"submit\">Détails</button>";
+                                        echo "</form>";
+                                        echo "</td>";
+                                        echo "</tr>";
+                                        $compteE += 1;
+                                    }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <img src="assets/logo_white.png" alt="logo" draggable="false">
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

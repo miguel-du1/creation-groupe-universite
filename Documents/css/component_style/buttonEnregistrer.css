@@ -1,0 +1,71 @@
+#button_enregistrer_info_etudiant {
+    width: 100%;
+    height: 50px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.349);
+    background-color: rgb(12, 12, 12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    overflow: hidden;
+    padding-left: 5px;
+    position: absolute;
+    bottom: 0;
+}
+
+.IconContainer {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(to top, #5D0632, #980a51);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 2;
+    transition-duration: 0.5s;
+
+    i {
+        display: flex;
+        color: #f5f5f5;
+    }
+}
+
+.icon {
+    border-radius: 1px;
+}
+
+.text {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 1;
+    transition-duration: 0.5s;
+    font-size: 16px;
+    flex: 1;
+    font-weight: 400;
+}
+
+#button_enregistrer_info_etudiant:hover .IconContainer {
+    width: calc(100% - 5px);
+    transition-duration: 0.5s;
+}
+
+#button_enregistrer_info_etudiant:hover .text {
+    transform: translate(60px);
+    width: 0;
+    font-size: 0;
+    opacity: 0;
+    transition-duration: 0.5s;
+}
+
+#button_enregistrer_info_etudiant:active {
+    transform: scale(0.95);
+    transition-duration: 0.5s;
+}

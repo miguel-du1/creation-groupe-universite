@@ -1,0 +1,53 @@
+#form_editer_info_etudiant {
+    position: absolute;
+    top: 25px;
+    right: calc(25px + 35px + 120px);
+    z-index: 4;
+}
+
+#button_editer_info_etudiant {
+    position: relative;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100px;
+    height: 30px;
+    border: none;
+    padding: 0px 20px;
+    background: linear-gradient(to top, #5D0632, #980a51);
+    color: white;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0px #2f071b;
+    transition-duration: .3s;
+}
+
+#icon_editer_info_etudiant {
+    width: 13px;
+    position: absolute;
+    right: 0;
+    margin-right: 20px;
+    color: white;
+    transition-duration: .3s;
+    display: flex;
+}
+
+#button_editer_info_etudiant:hover {
+    color: transparent;
+}
+
+#button_editer_info_etudiant:hover #icon_editer_info_etudiant {
+    right: 43%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    transition-duration: .3s;
+}
+
+#button_editer_info_etudiant:active {
+    transform: translate(3px , 3px);
+    transition-duration: .3s;
+    box-shadow: 2px 2px 0px rgb(140, 32, 212);
+}

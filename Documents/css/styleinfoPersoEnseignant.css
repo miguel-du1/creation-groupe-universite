@@ -1,0 +1,137 @@
+/* styleCompte.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --bordeaux: #581428;
+    --bg-grey: #f2f2f2;
+}
+
+.old-style-container {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    align-items: flex-start;
+}
+
+/* Base des cartes bordeaux */
+.card {
+    border: 2px solid var(--bordeaux);
+    border-radius: 30px;
+    padding: 20px;
+    background: white;
+    margin-bottom: 20px;
+}
+
+.column-left { width: 300px; }
+.column-center { flex: 1; }
+.column-right { width: 280px; }
+
+/* Titres */
+h2, h3 {
+    color: var(--bordeaux);
+    text-align: center;
+    margin-top: 0;
+}
+
+.role-label {
+    text-align: center;
+    font-weight: bold;
+    color: var(--bordeaux);
+    margin-top: -10px;
+}
+
+/* Cercle de profil */
+.profile-circle {
+    width: 200px;
+    height: 200px;
+    background-color: #c4c4c4; /* Gris maquette */
+    border: 10px solid var(--bordeaux);
+    border-radius: 50%;
+    margin: 20px auto;
+}
+
+/* Pillules d'affichage (les faux inputs gris) */
+.pill-display {
+    background-color: var(--bg-grey);
+    border-radius: 15px;
+    padding: 8px 15px;
+    color: #999;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+    min-height: 20px;
+}
+
+.password-pill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-btn {
+    background: white;
+    border: 1px solid var(--bordeaux);
+    border-radius: 50%;
+    padding: 5px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    color: var(--bordeaux);
+}
+
+/* Titres avec points (Colonne centrale) */
+.dot-title {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    font-size: 1em;
+}
+
+.dot-title::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--bordeaux);
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+/* Layout interne */
+.flex-row { display: flex; gap: 10px; }
+.half { width: 50%; }
+.third { width: 33%; }
+.full { width: 100%; box-sizing: border-box; }
+.mini { width: 60px; text-align: center; }
+
+.section-group {
+    border-left: 2px solid #ddd;
+    margin-left: 5px;
+    padding-left: 20px;
+    margin-bottom: 30px;
+}
+
+/* Listes numérotées bordeaux */
+.numbered-list {
+    list-style: none;
+    counter-reset: my-counter;
+    padding-left: 0;
+}
+
+.numbered-list li {
+    counter-increment: my-counter;
+    margin-bottom: 8px;
+    font-size: 0.85em;
+    color: var(--bordeaux);
+}
+
+.numbered-list li::before {
+    content: counter(my-counter) ". ";
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.empty-bottom-pill {
+    height: 60px;
+    background: var(--bg-grey);
+    border-radius: 15px;
+    width: 100%;
+}

@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Lexend", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
+.main_layout_panel {
+    display: flex;
+}
+
+.main_content_panel {
+    padding: 10px 20px;
+}
