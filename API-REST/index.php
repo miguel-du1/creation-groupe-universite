@@ -17,6 +17,13 @@ require_once 'modele/etudiant.php';
 $database = new Database();
 $db = $database->getConnection();
 
+// Vérification de la connexion
+if (!$db) {
+    http_response_code(500);
+    echo json_encode(["error" => "Erreur de connexion à la base de données"]);
+    exit;
+}
+
 // Déclaration des objets des classes pour interagir avec la base de données
 $compte = new compte($db);
 $covoiturages = new covoiturages($db);
@@ -275,8 +282,11 @@ if ($resource === 'groupes') {
             if ($id && $detailAction === "etudiants") {
                 $data = $groupe->getListesEtudiants($id);
                 echo json_encode($data);
-                break;
+            } else {
+                http_response_code(405);
+                echo json_encode(["error" => "Méthode non autorisée ou non implémentée"]);
             }
+            break;
         case 'POST':
             if ($id && $detailAction === "etudiants") {
                 $json = file_get_contents("php://input");
@@ -294,11 +304,9 @@ if ($resource === 'groupes') {
                 echo json_encode([
                     "success" => $status
                 ]);
-                break;
-            }
-            // Standard Creation: POST /groupes
-            // Body: { codeGroupe, idTypeGroupe, idPromotion, ... }
-            if (!$id) {
+            } elseif (!$id) {
+                // Standard Creation: POST /groupes
+                // Body: { codeGroupe, idTypeGroupe, idPromotion, ... }
                 $json = file_get_contents("php://input");
                 $data = json_decode($json, true);
                 if ($data) {
@@ -307,18 +315,19 @@ if ($resource === 'groupes') {
                         http_response_code(201);
                         echo json_encode($result);
                     } else {
-                        http_response_code(500); 
+                        http_response_code(500);
                         echo json_encode($result);
                     }
                 } else {
-                     http_response_code(400);
-                     echo json_encode(["success"=>false, "message"=>"JSON invalide"]);
+                    http_response_code(400);
+                    echo json_encode(["success" => false, "message" => "JSON invalide"]);
                 }
-                break;
+            } else {
+                http_response_code(400);
+                echo json_encode(["error" => "Action non reconnue"]);
             }
-            http_response_code(400);
-            echo json_encode(["error" => "Action non reconnue"]);
             break;
+        default:
             http_response_code(405);
             echo json_encode(["error" => "Méthode non autorisée"]);
             break;

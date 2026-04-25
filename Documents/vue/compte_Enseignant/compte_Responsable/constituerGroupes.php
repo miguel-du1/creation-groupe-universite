@@ -721,7 +721,7 @@ $liste_types_groupe = Groupe::getAllTypesGroupe();
                                 <div class="button_panel_form">
                                     <?php if (isset($_GET['status'])) : ?>
                                         <button type="submit">Recréer les groupes</button>
-                                        <a href="<?php echo "index.php?page=constituerGroupeRes&promo={$_GET['promo']}&edit=1&action=confimer"; ?>">Confirmer</a>
+                                        <a href="<?php echo "index.php?page=constituerGroupeRes&promo={$_GET['promo']}&edit=1&action=confirmer"; ?>">Confirmer</a>
                                     <?php else: ?>
                                         <button type="submit">Créer les groupes</button>
                                     <?php endif; ?>

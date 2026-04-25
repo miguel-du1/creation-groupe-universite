@@ -142,9 +142,8 @@ switch ($page) {
         break;
     case 'constituerGroupeRes':
         require_once __DIR__ . '/controleur/c_responsable.php';
-        if ($methode === "POST" && $action === "") ;
-        elseif ($methode === "GET" && isset($_GET['action']) && $_GET['action'] === "constituer") constituerGroupeParPromo();
-        elseif (isset($_GET['action']) && $_GET['action'] === "confimer") sauvegarderNouveauGroupesDB();
+        if ($methode === "GET" && isset($_GET['action']) && $_GET['action'] === "constituer") constituerGroupeParPromo();
+        elseif (isset($_GET['action']) && $_GET['action'] === "confirmer") sauvegarderNouveauGroupesDB();
         else afficherUIConstituerGroupes();
         break;
     case 'ajouterEtuRes':
